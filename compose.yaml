@@ -1,0 +1,7 @@
+services:
+  tickets-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3322:3000
