@@ -59,7 +59,7 @@ export default function Home() {
           <article className={styles.ticket}>
             <header className={styles.ticket__header}>
               <p>### PremierPluss ###</p>
-              <p>Agencia: {ticketData.ag_name}</p>
+              <p>Agencia: {ticketData.agencia}</p>
               <p>Numero Ticket: {ticketData.id}</p>
               <p>Fecha: {formatDate(ticketData.created)}</p>
             </header>
@@ -70,20 +70,21 @@ export default function Home() {
             <div className={styles.ticket__body}>
               {groupedBets && Object.entries(groupedBets).map(([key, bets]) =>{
                 let [product_id, lotery_id, amount] = key.split('-');
-                let betDescriptions = bets.map(bet => `${bet.number_value}-${bet.number_name.substr(0, 3)}`).join(', ');
+                let betDescriptions = bets.map(bet => `${bet.number}`).join(', ');
                 return (
                   <section className={styles.ticket__section} key={key}>
-                    <h3>{bets[0].lotery_name}</h3>
+                    <h3>{bets[0].lotery}</h3>
                     <p>
                       <span>{betDescriptions}</span>
                       <span> X {amount}</span>
                     </p>
+                    {bets[0].limit!== '' && <p>{bets[0].limit}</p>}
                   </section>
                 )
               })}
             </div>
             <footer className={styles.ticket__footer}>
-              <span>Total Ticket {ticketData.moneda}: {ticketData.amount}</span>
+              <span>Total Ticket {ticketData.moneda}: {ticketData.total_amount}</span>
               <span>El ticket caduca a los 3 dias</span>
               <br></br>
               <span style={{textAlign: 'center'}}><a href='https://premierpluss.com/' rel="nofollow noopener" target='_blank'>..:: PremierPluss ::..</a></span>
