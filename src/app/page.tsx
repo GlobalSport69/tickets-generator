@@ -7,6 +7,25 @@ import { useSearchParams } from 'next/navigation'
 import Loading from './components/Loading'
 import Notfound from './components/Notfound'
 
+interface Bet {
+  product_id: string;
+  lotery_id: string;
+  amount: string;
+  number_value: string;
+  number_name?: string;
+  lotery: string;
+  limit?: string;
+}
+
+interface TicketData {
+  agencia: string;
+  id: string;
+  created: string;
+  moneda: string;
+  total_amount: number;
+  bets: Bet[];
+}
+
 function getTicketDetails(code: string | null) {
   return getTicketData(code)
 }
@@ -23,8 +42,8 @@ function formatDate(date: string | number | Date) {
 
 export default function Home() {
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [ticketData, setTicketData] = useState(null)
+  const [ticketData, setTicketData] = React.useState<TicketData | null>(null)
+  const [isLoading, setIsLoading] = React.useState<boolean>(true)
   const searchParams = useSearchParams()
 
   function groupBy(array: any[], properties: string[]) {
@@ -40,9 +59,16 @@ export default function Home() {
   
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getTicketDetails(searchParams.get('code'))
-      setTicketData(data)
-      setIsLoading(false)
+      try {
+        const data = await getTicketDetails(searchParams.get('code'))
+        if (data) {
+          setTicketData(data)
+        }
+      } catch (error) {
+        console.error('Error fetching ticket data:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
     fetchData()
   }, [searchParams])
@@ -52,7 +78,7 @@ export default function Home() {
       return (
         <><Loading /></>
       )
-    } else if (Object.keys(ticketData?.bets).length > 0) {
+    } else if (ticketData && Object.keys(ticketData.bets ?? {}).length > 0) {
       const groupedBets: Record<string, any[]> = ticketData?.bets? groupBy(ticketData.bets, ['product_id', 'lotery_id', 'amount']) : null;
       return (
           <>
@@ -81,7 +107,7 @@ export default function Home() {
                       <span>{betDescriptions}</span>
                       <span> x {amount}</span>
                     </p>
-                    {bets[0].limit !== '' && <p>{bets[0].limit}</p>}
+                    {bets[0].limit !== '' && <><p>{bets[0].limit}</p><p><a href="https://polla.premierpluss.com" target="_blank" rel="noopener noreferrer">Monitorea tu progreso Aqui</a></p></>}
                   </section>
                 );
               })}
@@ -90,7 +116,7 @@ export default function Home() {
               <span>Total Ticket {ticketData.moneda}: {ticketData.total_amount}</span>
               <span>El ticket caduca a los 3 dias</span>
               <br></br>
-              <span style={{textAlign: 'center'}}><a href='https://premierpluss.com/' rel="nofollow noopener" target='_blank'>..:: PremierPluss ::..</a></span>
+              <span className={styles.ticket__spanUrl}><a href='https://premierpluss.com/' rel="nofollow noopener" target='_blank'>..:: PremierPluss ::..</a></span>
             </footer>
           </article>
         </>

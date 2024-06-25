@@ -118,3 +118,6 @@
   border-top: 2px dashed hsl(200, 10%, 92%);
   border-radius: 0 0 0.325rem 0.325rem;
 }
+.ticket__spanUrl {
+  text-align: center;
+}
