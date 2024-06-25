@@ -68,19 +68,22 @@ export default function Home() {
               <div className={`${styles.ticket__notch} ${styles.ticket__notch__right}`}></div>
             </div>
             <div className={styles.ticket__body}>
-              {groupedBets && Object.entries(groupedBets).map(([key, bets]) =>{
+              {groupedBets && Object.entries(groupedBets).map(([key, bets]) => {
                 let [product_id, lotery_id, amount] = key.split('-');
-                let betDescriptions = bets.map(bet => `${bet.number}`).join(', ');
+                let betDescriptions = bets.map(bet => {
+                  let numberName = bet.number_name ? bet.number_name.substring(0, 3) : '';
+                  return numberName ? `${bet.number_value}-${numberName}` : `${bet.number_value}`;
+                }).join(', ');
                 return (
                   <section className={styles.ticket__section} key={key}>
                     <h3>{bets[0].lotery}</h3>
                     <p>
                       <span>{betDescriptions}</span>
-                      <span> X {amount}</span>
+                      <span> x {amount}</span>
                     </p>
-                    {bets[0].limit!== '' && <p>{bets[0].limit}</p>}
+                    {bets[0].limit !== '' && <p>{bets[0].limit}</p>}
                   </section>
-                )
+                );
               })}
             </div>
             <footer className={styles.ticket__footer}>
