@@ -107,7 +107,7 @@ export default function Home() {
                       <span>{betDescriptions}</span>
                       <span> x {amount}</span>
                     </p>
-                    {bets[0].limit !== '' && <><p>{bets[0].limit}</p><p><a href="https://polla.premierpluss.com" target="_blank" rel="noopener noreferrer">Monitorea tu progreso Aqui</a></p></>}
+                    {bets[0].limit != null && <p>{bets[0].limit} <br /> <a href="https://polla.premierpluss.com" target="_blank" rel="noopener noreferrer">Monitorea tu progreso Aqui</a></p>}
                   </section>
                 );
               })}

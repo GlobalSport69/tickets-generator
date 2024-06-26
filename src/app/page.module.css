@@ -5,15 +5,16 @@
   min-height: 100vh;
   color: hsl(200, 10%, 30%);
   background-color: hsl(200, 10%, 96%);
-  /* background-image: url('../../public/home-font.png');
-  background-position: center;
-  background-size: 100%; */
+  position: relative;
 }
 
 .ticket {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
   max-width: 24rem;
+	animation: ticket 1.75s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 .ticket__header,
@@ -120,4 +121,13 @@
 }
 .ticket__spanUrl {
   text-align: center;
+}
+
+@keyframes ticket {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
 }

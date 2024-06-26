@@ -1,0 +1,6 @@
+# .dockerignore for nextjs app
+node_modules/
+.vscode/
+.gitignore
+compose.yaml
+Dockerfile
